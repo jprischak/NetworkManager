@@ -10,8 +10,8 @@ public class Player : MonoBehaviour {
     public float speed = 10f;
 
 
-    private Rigidbody myRigidbody;
-
+    //private Rigidbody myRigidbody;
+    private NetworkView networkView;
 
 
 
@@ -20,17 +20,33 @@ public class Player : MonoBehaviour {
     * */
     private void Start()
     {
-        myRigidbody = GetComponent<Rigidbody>();
+        //myRigidbody = GetComponent<Rigidbody>();
+        networkView = GetComponent<NetworkView>();
     }
 
 
     private void Update()
     {
-        InputMovement();
+        if(networkView.isMine)
+            InputMovement();
     }
 
 
+    private void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    {
+        Vector3 syncPosition = Vector3.zero;
 
+        if(stream.isWriting)
+        {
+            syncPosition = transform.position;
+            stream.Serialize(ref syncPosition);
+        }
+        else
+        {
+            stream.Serialize(ref syncPosition);
+            transform.position = syncPosition;
+        }
+    }
 
 
 
@@ -42,15 +58,15 @@ public class Player : MonoBehaviour {
     private void InputMovement()
     {
         if (Input.GetKey(KeyCode.W))
-            transform.Translate(transform.position + Vector3.forward * speed * Time.deltaTime);
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.S))
-            transform.Translate(transform.position - Vector3.forward * speed * Time.deltaTime);
+            transform.Translate(-Vector3.forward * speed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.D))
-            transform.Translate(transform.position + Vector3.right * speed * Time.deltaTime);
+            transform.Translate(Vector3.right * speed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.A))
-            transform.Translate(transform.position - Vector3.right * speed * Time.deltaTime);
+            transform.Translate(-Vector3.right * speed * Time.deltaTime);
     }
 }
