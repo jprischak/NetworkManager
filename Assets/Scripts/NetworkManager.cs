@@ -10,7 +10,7 @@ public class NetworkManager : MonoBehaviour {
     public GameObject playerPrefab;
 
 
-    private const string TYPENAME = "UniqueGame";
+    private const string TYPENAME = "GameName";
     private const string GAMENAME = "RoomName";
     private HostData[] hostList;
 
@@ -21,6 +21,10 @@ public class NetworkManager : MonoBehaviour {
     /**
     *  CLASS FUNCTIONS
     * */
+    private void Start()
+    {
+    }
+
 
     // This function is called when the server is successfully initialized
     private void OnServerInitialized()
@@ -94,6 +98,8 @@ public class NetworkManager : MonoBehaviour {
 
     private void JoinServer(HostData hostData)
     {
+        Debug.Log("Joining: " + hostData.gameName);
+
         Network.Connect(hostData);
     }
 
