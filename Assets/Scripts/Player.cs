@@ -27,26 +27,26 @@ public class Player : MonoBehaviour {
 
     private void Update()
     {
-        if(networkView.isMine)
+        //if(networkView.isMine)
             InputMovement();
     }
 
 
-    private void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
-    {
-        Vector3 syncPosition = Vector3.zero;
+    //private void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+    //{
+    //    Vector3 syncPosition = Vector3.zero;
 
-        if(stream.isWriting)
-        {
-            syncPosition = transform.position;
-            stream.Serialize(ref syncPosition);
-        }
-        else
-        {
-            stream.Serialize(ref syncPosition);
-            transform.position = syncPosition;
-        }
-    }
+    //    if(stream.isWriting)
+    //    {
+    //        syncPosition = transform.position;
+    //        stream.Serialize(ref syncPosition);
+    //    }
+    //    else
+    //    {
+    //        stream.Serialize(ref syncPosition);
+    //        transform.position = syncPosition;
+    //    }
+    //}
 
 
 
